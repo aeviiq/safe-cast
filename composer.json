@@ -1,0 +1,28 @@
+{
+    "name": "aeviiq/safe-cast",
+    "type": "library",
+    "description": "A library that provides a secure way to cast variables in PHP.",
+    "keywords": [
+        "php",
+        "cast",
+        "casting",
+        "safe-cast",
+        "aeviiq"
+    ],
+    "homepage": "https://github.com/aeviiq/safe-cast",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aeviiq Safe Cast contributors",
+            "homepage": "https://github.com/aeviiq/safe-cast/graphs/contributors"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Aeviiq\\SafeCast\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.2"
+    }
+}
