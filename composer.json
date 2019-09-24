@@ -23,7 +23,6 @@
         }
     },
     "require": {
-        "php": "^7.2",
-        "aeviiq/collection": "^3.1"
+        "php": "^7.2"
     }
 }
