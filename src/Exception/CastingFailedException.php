@@ -2,9 +2,9 @@
 
 namespace Aeviiq\SafeCast\Exception;
 
-class TransformationFailedException extends InvalidArgumentException
+class CastingFailedException extends InvalidArgumentException
 {
-    public static function unableToTransformValue($subject, string $to): TransformationFailedException
+    public static function unableToTransformValue($subject, string $to): CastingFailedException
     {
         $msg = 'Unable to transform (%s) "%s" to "%s".';
         $type = \gettype($subject);

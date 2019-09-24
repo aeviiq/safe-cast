@@ -2,15 +2,9 @@
 
 namespace Aeviiq\SafeCast;
 
-use Aeviiq\Collection\Collection;
-use Aeviiq\Collection\CollectionInterface;
-use Aeviiq\Collection\FloatCollection;
-use Aeviiq\Collection\IntCollection;
-use Aeviiq\Collection\ObjectCollection;
-use Aeviiq\Collection\StringCollection;
-use Aeviiq\SafeCast\Exception\TransformationFailedException;
+use Aeviiq\SafeCast\Exception\CastingFailedException;
 
-final class Transformer
+final class SafeCast
 {
     /**
      * Float: Will be transformed to the string representation, while contain the decimals.
@@ -22,7 +16,7 @@ final class Transformer
      *
      * Object: Will be transformed if they have implemented the __toString() method.
      *
-     * @throws TransformationFailedException When the given value could not be transformed to a string.
+     * @throws CastingFailedException When the given value could not be transformed to a string.
      */
     public static function toString($value): string
     {
@@ -48,7 +42,7 @@ final class Transformer
             return (string)$value;
         }
 
-        throw TransformationFailedException::unableToTransformValue($value, 'string');
+        throw CastingFailedException::unableToTransformValue($value, 'string');
     }
 
     /**
@@ -60,7 +54,7 @@ final class Transformer
      *
      * Object: Will be transformed to a float the same way a string is, if the object implements the __toString() method.
      *
-     * @throws TransformationFailedException When the given value could not be transformed to a float.
+     * @throws CastingFailedException When the given value could not be transformed to a float.
      */
     public static function toFloat($value): float
     {
@@ -83,7 +77,7 @@ final class Transformer
             return self::toFloat(self::toString($value));
         }
 
-        throw TransformationFailedException::unableToTransformValue($value, 'float');
+        throw CastingFailedException::unableToTransformValue($value, 'float');
     }
 
     /**
@@ -96,7 +90,7 @@ final class Transformer
      *
      * Object: Will be transformed to an integer the same way a string is, if the object implements the __toString() method.
      *
-     * @throws TransformationFailedException When the given value could not be transformed to a int.
+     * @throws CastingFailedException When the given value could not be transformed to a int.
      */
     public static function toInt($value): int
     {
@@ -123,7 +117,7 @@ final class Transformer
             return self::toInt(self::toString($value));
         }
 
-        throw TransformationFailedException::unableToTransformValue($value, 'int');
+        throw CastingFailedException::unableToTransformValue($value, 'int');
     }
 
     /**
@@ -135,7 +129,7 @@ final class Transformer
      *
      * Object: Will be transformed to a boolean the same way a string is, if the object implements the __toString() method.
      *
-     * @throws TransformationFailedException When the given value could not be transformed to a bool.
+     * @throws CastingFailedException When the given value could not be transformed to a bool.
      */
     public static function toBool($value): bool
     {
@@ -177,72 +171,7 @@ final class Transformer
             return self::toBool(self::toString($value));
         }
 
-        throw TransformationFailedException::unableToTransformValue($value, 'bool');
-    }
-
-    /**
-     * String: Will be transformed to a StringCollection
-     *
-     * Float: Will be transformed to a FloatCollection
-     *
-     * Boolean: Can not be transformed.
-     *
-     * Integer: Will be transformed to an IntegerCollection
-     *
-     * Object: Will be transformed to an ObjectCollection
-     *
-     * Array: If all values in the array are of the same type, e.g. object, an ObjectCollection will be returned.
-     *        The same rule applies for strings, integers and floats.
-     *        If the array contains mixed values, a (mixed) Collection will be returned.
-     *
-     * @throws TransformationFailedException When the given value could not be transformed to a CollectionInterface.
-     */
-    public static function toCollection($value): CollectionInterface
-    {
-        if (\is_string($value)) {
-            return new StringCollection([$value]);
-        }
-
-        if (\is_float($value)) {
-            return new FloatCollection([$value]);
-        }
-
-        if (\is_int($value)) {
-            return new IntCollection([$value]);
-        }
-
-        if (\is_object($value)) {
-            return new ObjectCollection([$value]);
-        }
-
-        if (\is_array($value)) {
-            $types = [];
-            foreach ($value as $item) {
-                $type = \gettype($item);
-                if (!isset($types[$type])) {
-                    $types[$type] = true;
-                }
-
-                if (\count($types) > 1) {
-                    return new Collection($value);
-                }
-            }
-
-            if (1 === \count($types)) {
-                switch (\key($types)) {
-                    case ('string' === $type):
-                        return new StringCollection($value);
-                    case ('double' === $type):
-                        return new FloatCollection($value);
-                    case ('integer' === $type):
-                        return new IntCollection($value);
-                    case ('object' === $type):
-                        return new ObjectCollection($value);
-                }
-            }
-        }
-
-        throw TransformationFailedException::unableToTransformValue($value, CollectionInterface::class);
+        throw CastingFailedException::unableToTransformValue($value, 'bool');
     }
 
     private static function hasToStringMethod(object $object): bool
