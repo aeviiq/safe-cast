@@ -46,7 +46,7 @@ final class SafeCast
     }
 
     /**
-     * String: Will be trimed and transformed to integer if the value is numeric.
+     * String: Will be trimed and transformed to float if the value is numeric.
      *
      * Boolean: Will be transformed to its float value. e.g.: true -> 1.0 and false -> 0.0.
      *
@@ -121,7 +121,7 @@ final class SafeCast
     }
 
     /**
-     * String: Will be trimed and transformed to integer if the value is numeric.
+     * String: Will be trimed and transformed to boolean if the value is '0', '1', 'true' or 'false'
      *
      * Float: Will be transformed if the value is either 1.0 (true) or 0.0 (false).
      *
@@ -138,11 +138,11 @@ final class SafeCast
         }
 
         if (\is_string($value)) {
-            if ('1' === $value || 'true' === $value) {
+            if ('1' === $value || 'true' === \strtolower($value)) {
                 return true;
             }
 
-            if ('0' === $value || 'false' === $value) {
+            if ('0' === $value || 'false' ===\strtolower($value)) {
                 return false;
             }
         }
