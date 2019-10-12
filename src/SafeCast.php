@@ -142,7 +142,7 @@ final class SafeCast
                 return true;
             }
 
-            if ('0' === $value || 'false' ===\strtolower($value)) {
+            if ('0' === $value || 'false' === \strtolower($value)) {
                 return false;
             }
         }
